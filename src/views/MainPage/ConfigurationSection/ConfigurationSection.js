@@ -8,12 +8,7 @@ const ConfigurationSection = () => {
     const [supportingStrikeOptions, setSupportingStrikeOptions] = useState([]);
     const [allCheckedParties, setAllCheckedParties] = useState(false);
     const [allCheckedCategories, setAllCheckedCategories] = useState(false);
-    const [checkBoxesState, setCheckBoxesState] = useState({});
-
-    const renderCheckBoxes = () => <div>
-
-
-    </div>
+    const [checkBoxesState, setCheckBoxesState] = useState({za: false, przeciw: false});
 
     const wrapCheckBoxSet = (object) => (state) => {
         let obj = {...checkBoxesState};
@@ -27,9 +22,9 @@ const ConfigurationSection = () => {
         .then((res) => res.json())
         .then((data) => {
             console.log(data);
-            let obj = {}
-            data.categories.forEach( (v,k,i) => obj[k] = false);
-            data.political_parties.forEach( (v,k,i) => obj[k] = false);
+            let obj = {...checkBoxesState}
+            data.categories.forEach( (v,k,i) => obj[v] = false);
+            data.political_parties.forEach( (v,k,i) => obj[v] = false);
             setCheckBoxesState(obj);
             setCategories(data.categories);
             setSupportingStrikeOptions(data.supporting_strike_options);
@@ -39,6 +34,7 @@ const ConfigurationSection = () => {
     }, []);
 
     return <div>
+
         {politicalParties.map(function(party){
             if(party != null){
                 return <Checkbox key={party} id={party} labelText={party} checked={allCheckedParties || checkBoxesState[party] } onChange={wrapCheckBoxSet(party)} />;
