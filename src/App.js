@@ -1,12 +1,26 @@
+import React from "react";
 import './App.css';
-import {Checkbox} from 'carbon-components-react';
+import AppHeader from './components/AppHeader/AppHeader';
+import MainPage from './views/MainPage/MainPage';
+
 function App() {
+
+  const [data, setData] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch("/api")
+      .then((res) => res.json())
+      .then((data) => setData(data.message));
+  }, []);
+
   return (
-    <fieldset className="bx--fieldset">
-      <legend className="bx--label">Checkbox heading</legend>
-      <Checkbox defaultChecked labelText="Checkbox label" id="checked" />
-      <Checkbox labelText="Checkbox label" id="checked-2" />
-    </fieldset>
+    <div>
+      <AppHeader />
+      <MainPage />
+      <p>
+        {!data ? "Loading..." : data}
+      </p>
+    </div>
   );
 }
 
