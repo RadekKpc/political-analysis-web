@@ -1,7 +1,6 @@
 import {DatePicker, DatePickerInput, Checkbox } from 'carbon-components-react';
 import {useState, useEffect} from 'react';
-const ConfigurationSection = () => {
-
+function ConfigurationSection({onTagsChange}) {
 
     const [categories, setCategories] = useState([]);
     const [politicalParties, setPoliticalParties] = useState([]);
@@ -9,6 +8,7 @@ const ConfigurationSection = () => {
     const [allCheckedParties, setAllCheckedParties] = useState(false);
     const [allCheckedCategories, setAllCheckedCategories] = useState(false);
     const [checkBoxesState, setCheckBoxesState] = useState({za: false, przeciw: false});
+    const [chartType, setChartType] = useState(null);
 
     const wrapCheckBoxSet = (object) => (settAll) => (state) => {
         console.log(state);
@@ -17,6 +17,7 @@ const ConfigurationSection = () => {
         obj[object] = state;
         setCheckBoxesState(obj);
         console.log(obj);
+        onTagsChange(categories.filter(cat => checkBoxesState[cat]), politicalParties.filter(part => checkBoxesState[part]), supportingStrikeOptions, chartType);
     }
 
     useEffect(() => {
@@ -31,6 +32,7 @@ const ConfigurationSection = () => {
             setCategories(data.categories);
             setSupportingStrikeOptions(data.supporting_strike_options);
             setPoliticalParties(data.political_parties);
+            setChartType("Bar");
             console.log(checkBoxesState);
         });
     }, []);
@@ -60,19 +62,6 @@ const ConfigurationSection = () => {
         <Checkbox key="za" id="za" labelText={"za"} checked={ checkBoxesState["za"] } onChange={wrapCheckBoxSet("za")} />
         <Checkbox key="przeciw" id="przeciw" labelText="przeciw" checked={ checkBoxesState["przeciw"] } onChange={wrapCheckBoxSet("przeciw")} /> 
 
-
-        <DatePicker datePickerType="range">
-        <DatePickerInput
-            id="date-picker-input-id-start"
-            placeholder="mm/dd/yyyy"
-            labelText="Start date"
-        />
-        <DatePickerInput
-            id="date-picker-input-id-finish"
-            placeholder="mm/dd/yyyy"
-            labelText="End date"
-        />
-        </DatePicker>
     </div>
 }
 
