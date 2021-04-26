@@ -9,10 +9,12 @@ const MainPage = () => {
 
     const [categories, setCategories] = useState([]);
     const [count, setCount]= useState([]);
-    const [chartType, setChartType] = useState(null);
+    
     const [cats, setCats] = useState([]);
     const [politicalParties, setPoliticalParties] = useState([]);
     const [supportingStrikeOptions, setSupportingStrikeOptions] = useState([]);
+    const [chartType, setChartType] = useState(null);
+    const [dateRange, setDataRange] = useState([]);
 
 
     const onTagsChange = (categories, parties, supportingStrike, type) => {
@@ -46,17 +48,17 @@ const MainPage = () => {
             <Column>
                 <PlotArea labels={categories} values={count} chartType={"Bar"}/>
                 <Button onClick={handleClick}>Draw Chart </Button>
-                <DatePicker datePickerType="range">
-                <DatePickerInput
-                    id="date-picker-input-id-start"
-                    placeholder="mm/dd/yyyy"
-                    labelText="Start date"
-                />
-                <DatePickerInput
-                    id="date-picker-input-id-finish"
-                    placeholder="mm/dd/yyyy"
-                    labelText="End date"
-                />
+                <DatePicker datePickerType="range" onChange = {setDataRange}>
+                    <DatePickerInput
+                        id="date-picker-input-id-start"
+                        placeholder="mm/dd/yyyy"
+                        labelText="Start date"
+                    />
+                    <DatePickerInput
+                        id="date-picker-input-id-finish"
+                        placeholder="mm/dd/yyyy"
+                        labelText="End date"
+                    />
                 </DatePicker>
             </Column>
         </Row>

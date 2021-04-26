@@ -13,8 +13,12 @@ function ConfigurationSection({onTagsChange}) {
     
     const items = [
         {
-          id: 'Bar',
-          text: 'Bar analize for total tweets per selected categories',
+            id: 'Bar',
+            text: 'Bar analize for total tweets per selected categories',
+        },
+        {
+            id: 'Another',
+            text: 'Example for antoher category',
         },
       ];
 
@@ -50,7 +54,7 @@ function ConfigurationSection({onTagsChange}) {
         fetch("/categories")
         .then((res) => res.json())
         .then((data) => {
-            let obj = {...checkBoxesState}
+            let obj = {}
             data.categories.forEach( (v,k,i) => obj[v] = false);
             data.political_parties.forEach( (v,k,i) => obj[v] = false);
             setCheckBoxesState(obj);
