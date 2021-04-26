@@ -15,12 +15,12 @@ const MainPage = () => {
     const [supportingStrikeOptions, setSupportingStrikeOptions] = useState([]);
 
 
-    const onTagsChange = (c, parties, supportingStrike, type) => {
-        setCats(c);
+    const onTagsChange = (categories, parties, supportingStrike, type) => {
+        setCats(categories);
         setPoliticalParties(parties);
         setSupportingStrikeOptions(supportingStrike);
         setChartType(type);
-
+        console.log(categories, parties, supportingStrike, type);
     }
 
     // narazie obsluguje tylko sumaryczna liczbe twetow dla kategorii, trzeba to zmienic pobierac dane na podstawie zaznaczonych pol i typy wykresu(statstyki)
