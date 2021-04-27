@@ -17,8 +17,8 @@ function ConfigurationSection({onTagsChange}) {
             text: 'Bar analize for total tweets per selected categories',
         },
         {
-            id: 'Another',
-            text: 'Example for antoher category',
+            id: 'Total',
+            text: 'Total count of tweets for specific categories',
         },
       ];
 

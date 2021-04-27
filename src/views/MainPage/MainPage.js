@@ -8,37 +8,32 @@ import { stringify } from 'query-string';
 const MainPage = () => {
 
     const [categories, setCategories] = useState([]);
-    const [count, setCount]= useState([]);
-    
-    const [cats, setCats] = useState([]);
     const [politicalParties, setPoliticalParties] = useState([]);
     const [supportingStrikeOptions, setSupportingStrikeOptions] = useState([]);
     const [chartType, setChartType] = useState(null);
     const [dateRange, setDataRange] = useState([]);
 
-
     const onTagsChange = (categories, parties, supportingStrike, type) => {
-        setCats(categories);
+        setCategories(categories);
         setPoliticalParties(parties);
         setSupportingStrikeOptions(supportingStrike);
         setChartType(type);
-        console.log(categories, parties, supportingStrike, type);
     }
 
     // narazie obsluguje tylko sumaryczna liczbe twetow dla kategorii, trzeba to zmienic pobierac dane na podstawie zaznaczonych pol i typy wykresu(statstyki)
-    async function handleClick(e) {
-        var filtered = cats.filter(function (el) {
-            return el != null;
-          });
-        var params = {categories: filtered};
+    // async function handleClick(e) {
+    //     var filtered = cats.filter(function (el) {
+    //         return el != null;
+    //       });
+    //     var params = {categories: filtered};
 
-        const response = await fetch(`/tweetsCount?${stringify(params)}`)
-        const res = await response.json();
-        let ct = res.countTotal.map((x) => x.category);
-        let counts = res.countTotal.map((x) => x.count);
-        setCategories(ct);
-        setCount(counts);
-    }
+    //     const response = await fetch(`/tweetsCount?${stringify(params)}`)
+    //     const res = await response.json();
+    //     let ct = res.countTotal.map((x) => x.category);
+    //     let counts = res.countTotal.map((x) => x.count);
+    //     setCategories(ct);
+    //     setCount(counts);
+    // }
 
     return(  
         <Row>
@@ -46,20 +41,21 @@ const MainPage = () => {
                 <ConfigurationSection onTagsChange={onTagsChange}/>
             </Column>
             <Column>
-                <PlotArea labels={categories} values={count} chartType={"Bar"}/>
-                <Button onClick={handleClick}>Draw Chart </Button>
-                <DatePicker datePickerType="range" onChange = {setDataRange}>
-                    <DatePickerInput
-                        id="date-picker-input-id-start"
-                        placeholder="mm/dd/yyyy"
-                        labelText="Start date"
-                    />
-                    <DatePickerInput
-                        id="date-picker-input-id-finish"
-                        placeholder="mm/dd/yyyy"
-                        labelText="End date"
-                    />
-                </DatePicker>
+                <PlotArea labels={[...categories, ...politicalParties, ...supportingStrikeOptions]} chartType={chartType}/>
+                <div style={{margin: 20}}>
+                    <DatePicker datePickerType="range" onChange = {setDataRange} >
+                        <DatePickerInput
+                            id="date-picker-input-id-start"
+                            placeholder="mm/dd/yyyy"
+                            labelText="Start date"
+                        />
+                        <DatePickerInput
+                            id="date-picker-input-id-finish"
+                            placeholder="mm/dd/yyyy"
+                            labelText="End date"
+                        />
+                    </DatePicker>
+                </div>
             </Column>
         </Row>
     );
