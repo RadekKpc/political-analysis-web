@@ -20,6 +20,14 @@ function ConfigurationSection({onTagsChange}) {
             id: 'Total',
             text: 'Total count of tweets for specific categories',
         },
+        {
+            id: 'TotalLikesCount',
+            text: 'Total count of tweets\' likes for specific categories'
+        },
+        {
+            id: 'TotalRetweetCount',
+            text: 'Total count of retweets for specific categories'
+        }
       ];
 
     const setAllCategories = (state) => {

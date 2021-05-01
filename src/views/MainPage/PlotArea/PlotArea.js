@@ -1,7 +1,7 @@
 import { HorizontalBar, Bar } from 'react-chartjs-2';
 import { useState } from 'react';
 import { Button } from 'carbon-components-react';
-import  getTotalTweetsForSpecificCategories from '../../../services/StaticStatisticsService';
+import { getTotalTweetsForSpecificCategories, getTotalLikesForSpecificCategories, getTotalRetweetsForSpecificCategories} from '../../../services/StaticStatisticsService';
 function PlotArea(props) {
 
   const [display, setDisplay] = useState(false);
@@ -13,7 +13,13 @@ function PlotArea(props) {
         // call proper api 
         break;
       case "Total": 
-        getTotalTweetsForSpecificCategories(props.labels, setData);
+        getTotalTweetsForSpecificCategories(props.labels, props.dateRange, setData);
+        break;
+      case "TotalLikesCount":
+        getTotalLikesForSpecificCategories(props.labels, props.dateRange, setData);
+        break;
+      case "TotalRetweetCount":
+        getTotalRetweetsForSpecificCategories(props.labels, props.dateRange, setData);
         break;
       default: 
         setData([]);
@@ -98,6 +104,8 @@ function PlotArea(props) {
     switch(props.chartType) {
       case "Bar": return <HorizontalBar data={setDt()} options={opt} />
       case "Total": return <HorizontalBar data={setDt()} options={opt} />
+      case "TotalLikesCount": return <HorizontalBar data={setDt()} options={opt} />
+      case "TotalRetweetCount": return <HorizontalBar data={setDt()} options={opt} />
       default: return <Bar data={setDt()} options={opt} />
     }
   }
