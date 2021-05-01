@@ -1,47 +1,38 @@
 
-const getTotalTweetsForSpecificCategories = (categories, dateRange, setData) => {
+const getTotalCountForSpecificCategories = (categories, dateRange, setData, type) => {
+
+    let attr;
+
+    switch (type) {
+        case "TotalTweetsCount":
+            attr = "tweets"
+            break;
+        case "TotalLikesCount":
+            attr = "likes";
+            break;
+        case "TotalRetweetsCount":
+            attr = "retweets";
+            break;
+        default:
+            attr = "";
+            break;
+    }
 
     const requestOptions = {
         method: 'POST',
-        headers: { 
+        headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({categories: categories,
-                              dateRange: dateRange})
+        body: JSON.stringify({
+            categories: categories,
+            dateRange: dateRange,
+            attribute: attr
+        })
     };
-    fetch('/total', requestOptions)
+
+    fetch('/total-count', requestOptions)
         .then(response => response.json())
         .then(data => setData(data));
 }
 
-const getTotalLikesForSpecificCategories = (categories, dateRange, setData) => {
-
-    const requestOptions = {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({categories: categories,
-                              dateRange: dateRange})
-    };
-    fetch('/total-likes', requestOptions)
-        .then(response => response.json())
-        .then(data => setData(data));
-}
-
-const getTotalRetweetsForSpecificCategories = (categories, dateRange, setData) => {
-
-    const requestOptions = {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({categories: categories,
-                              dateRange: dateRange})
-    };
-    fetch('/total-retweets', requestOptions)
-        .then(response => response.json())
-        .then(data => setData(data));
-}
-
-export {getTotalTweetsForSpecificCategories, getTotalLikesForSpecificCategories, getTotalRetweetsForSpecificCategories};
+export { getTotalCountForSpecificCategories };

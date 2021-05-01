@@ -17,7 +17,7 @@ function ConfigurationSection({onTagsChange}) {
             text: 'Bar analize for total tweets per selected categories',
         },
         {
-            id: 'Total',
+            id: 'TotalTweetsCount',
             text: 'Total count of tweets for specific categories',
         },
         {
@@ -25,7 +25,7 @@ function ConfigurationSection({onTagsChange}) {
             text: 'Total count of tweets\' likes for specific categories'
         },
         {
-            id: 'TotalRetweetCount',
+            id: 'TotalRetweetsCount',
             text: 'Total count of retweets for specific categories'
         }
       ];

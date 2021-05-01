@@ -1,7 +1,8 @@
 import { HorizontalBar, Bar } from 'react-chartjs-2';
 import { useState } from 'react';
 import { Button } from 'carbon-components-react';
-import { getTotalTweetsForSpecificCategories, getTotalLikesForSpecificCategories, getTotalRetweetsForSpecificCategories} from '../../../services/StaticStatisticsService';
+import { getTotalCountForSpecificCategories } from '../../../services/StaticStatisticsService';
+
 function PlotArea(props) {
 
   const [display, setDisplay] = useState(false);
@@ -12,14 +13,14 @@ function PlotArea(props) {
       case "Bar": 
         // call proper api 
         break;
-      case "Total": 
-        getTotalTweetsForSpecificCategories(props.labels, props.dateRange, setData);
+      case "TotalTweetsCount": 
+        getTotalCountForSpecificCategories(props.labels, props.dateRange, setData, "TotalTweetsCount");
         break;
       case "TotalLikesCount":
-        getTotalLikesForSpecificCategories(props.labels, props.dateRange, setData);
+        getTotalCountForSpecificCategories(props.labels, props.dateRange, setData, "TotalLikesCount");
         break;
-      case "TotalRetweetCount":
-        getTotalRetweetsForSpecificCategories(props.labels, props.dateRange, setData);
+      case "TotalRetweetsCount":
+        getTotalCountForSpecificCategories(props.labels, props.dateRange, setData, "TotalRetweetsCount");
         break;
       default: 
         setData([]);
@@ -103,9 +104,9 @@ function PlotArea(props) {
     if(!display) return <div></div>;
     switch(props.chartType) {
       case "Bar": return <HorizontalBar data={setDt()} options={opt} />
-      case "Total": return <HorizontalBar data={setDt()} options={opt} />
+      case "TotalTweetsCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalLikesCount": return <HorizontalBar data={setDt()} options={opt} />
-      case "TotalRetweetCount": return <HorizontalBar data={setDt()} options={opt} />
+      case "TotalRetweetsCount": return <HorizontalBar data={setDt()} options={opt} />
       default: return <Bar data={setDt()} options={opt} />
     }
   }
