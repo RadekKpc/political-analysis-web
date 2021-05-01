@@ -20,28 +20,13 @@ const MainPage = () => {
         setChartType(type);
     }
 
-    // narazie obsluguje tylko sumaryczna liczbe twetow dla kategorii, trzeba to zmienic pobierac dane na podstawie zaznaczonych pol i typy wykresu(statstyki)
-    // async function handleClick(e) {
-    //     var filtered = cats.filter(function (el) {
-    //         return el != null;
-    //       });
-    //     var params = {categories: filtered};
-
-    //     const response = await fetch(`/tweetsCount?${stringify(params)}`)
-    //     const res = await response.json();
-    //     let ct = res.countTotal.map((x) => x.category);
-    //     let counts = res.countTotal.map((x) => x.count);
-    //     setCategories(ct);
-    //     setCount(counts);
-    // }
-
     return(  
         <Row>
             <Column>
                 <ConfigurationSection onTagsChange={onTagsChange}/>
             </Column>
             <Column>
-                <PlotArea labels={[...categories, ...politicalParties, ...supportingStrikeOptions]} chartType={chartType}/>
+                <PlotArea labels={[...categories, ...politicalParties, ...supportingStrikeOptions]} dateRange={dateRange} chartType={chartType}/>
                 <div style={{margin: 20}}>
                     <DatePicker datePickerType="range" onChange = {setDataRange} >
                         <DatePickerInput
