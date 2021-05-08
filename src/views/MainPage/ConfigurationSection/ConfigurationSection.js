@@ -7,15 +7,11 @@ function ConfigurationSection({onTagsChange}) {
     const [allCheckedParties, setAllCheckedParties] = useState(false);
     const [allCheckedCategories, setAllCheckedCategories] = useState(false);
     const [checkBoxesState, setCheckBoxesState] = useState({za: false, przeciw: false});
-    const [chartType, setChartType] = useState('Bar');
+    const [chartType, setChartType] = useState('TotalTweetsCount');
     const [za, setZa] = useState(false);
     const [przeciw, setPrzeciw] = useState(false);
     
     const items = [
-        {
-            id: 'Bar',
-            text: 'Bar analize for total tweets per selected categories',
-        },
         {
             id: 'TotalTweetsCount',
             text: 'Total count of tweets for specific categories',

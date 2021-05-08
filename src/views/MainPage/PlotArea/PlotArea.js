@@ -10,9 +10,6 @@ function PlotArea(props) {
   const drawPlot = () => {
     setDisplay(true);
     switch(props.chartType) {
-      case "Bar": 
-        // call proper api 
-        break;
       case "TotalTweetsCount": 
         getTotalCountForSpecificCategories(props.labels, props.dateRange, setData, "TotalTweetsCount");
         break;
@@ -103,7 +100,6 @@ function PlotArea(props) {
   const renderBar = () => {
     if(!display) return <div></div>;
     switch(props.chartType) {
-      case "Bar": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalTweetsCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalLikesCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalRetweetsCount": return <HorizontalBar data={setDt()} options={opt} />
