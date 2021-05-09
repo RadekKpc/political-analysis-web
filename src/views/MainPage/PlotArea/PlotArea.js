@@ -1,18 +1,17 @@
-import { HorizontalBar, Bar } from 'react-chartjs-2';
-import { useState } from 'react';
+import { HorizontalBar, Bar, Line } from 'react-chartjs-2';
+import { useEffect, useState } from 'react';
 import { Button } from 'carbon-components-react';
-import { getTotalCountForSpecificCategories } from '../../../services/StaticStatisticsService';
+import { getTotalCountForSpecificCategories, getTweetsForDay } from '../../../services/StaticStatisticsService';
+import { getBackgroundColor, getBorderColor } from './ColorGenerator';
 
 function PlotArea(props) {
 
   const [display, setDisplay] = useState(false);
   const [data, setData] = useState(false);
+
   const drawPlot = () => {
     setDisplay(true);
     switch(props.chartType) {
-      case "Bar": 
-        // call proper api 
-        break;
       case "TotalTweetsCount": 
         getTotalCountForSpecificCategories(props.labels, props.dateRange, setData, "TotalTweetsCount");
         break;
@@ -22,10 +21,47 @@ function PlotArea(props) {
       case "TotalRetweetsCount":
         getTotalCountForSpecificCategories(props.labels, props.dateRange, setData, "TotalRetweetsCount");
         break;
+      case "TimeTweetsCount":
+          getTweetsForDay(props.labels, props.dateRange, setData, "TotalTweetsCount");
+        break;
+      case "TimeLikesCount":
+        getTweetsForDay(props.labels, props.dateRange, setData, "TotalLikesCount");
+      break;
+      case "TimeRetweetsCount":
+        getTweetsForDay(props.labels, props.dateRange, setData, "TotalRetweetsCount");
+      break;
       default: 
         setData([]);
     }
   }
+
+  useEffect(() => {
+    console.log("setData", data);
+  }, [data]);
+
+  const setTimeData = () => 
+  {
+    let days = []
+    let start = props.dateRange[0] ? new Date(props.dateRange[0].getTime()) : new Date();
+    let end = props.dateRange[1] ? new Date(props.dateRange[1].getTime()) : new Date();
+    for (let d = start; d <= end; d.setDate(start.getDate() + 1)) {
+      days.push(new Date(d).toISOString().slice(0,10));
+
+    }
+    return  {
+      labels: [...days],
+      datasets: data ? data.map((set, i) => {
+        return {
+          label: set[0] ? set[0].category : '',
+          data: set[0] ? set.map((e) => { return {x: e.date, y: e.result}}) : [],
+          fill: false,
+          backgroundColor: getBackgroundColor(i),
+          borderColor: getBorderColor(i)
+        }
+      } 
+      ) : []
+    };
+  };
 
   const setDt = () => {
     return {
@@ -79,7 +115,7 @@ function PlotArea(props) {
         },
       ],
     };
-  }
+  };
 
   const opt = {
     indexAxis: 'y',
@@ -103,10 +139,12 @@ function PlotArea(props) {
   const renderBar = () => {
     if(!display) return <div></div>;
     switch(props.chartType) {
-      case "Bar": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalTweetsCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalLikesCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalRetweetsCount": return <HorizontalBar data={setDt()} options={opt} />
+      case "TimeTweetsCount": return <Line data={setTimeData()} />
+      case "TimeLikesCount": return <Line data={setTimeData()} />
+      case "TimeRetweetsCount": return <Line data={setTimeData()} />
       default: return <Bar data={setDt()} options={opt} />
     }
   }
