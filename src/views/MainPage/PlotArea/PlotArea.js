@@ -41,24 +41,22 @@ function PlotArea(props) {
 
   const setTimeData = () => 
   {
-    
     let days = []
     let start = props.dateRange[0] ? new Date(props.dateRange[0].getTime()) : new Date();
     let end = props.dateRange[1] ? new Date(props.dateRange[1].getTime()) : new Date();
-    while(end.getDate() !== start.getDate() || end.getMonth() !== start.getMonth() || end.getFullYear() !== start.getFullYear() ){
-      days.push(start.getFullYear() + '-' + ('0' + (start.getMonth() + 1)).slice(-2) + "-" + ( "0" + start.getUTCDate()).slice(-2));
-      start.setDate(start.getDate() + 1);
+    for (let d = start; d <= end; d.setDate(start.getDate() + 1)) {
+      days.push(new Date(d).toISOString().slice(0,10));
+
     }
-    console.log(days);
     return  {
       labels: [...days],
-      datasets: data ? data.map((set) => {
+      datasets: data ? data.map((set, i) => {
         return {
           label: set[0] ? set[0].category : '',
           data: set[0] ? set.map((e) => { return {x: e.date, y: e.result}}) : [],
           fill: false,
-          backgroundColor: getBackgroundColor(),
-          borderColor: getBorderColor()
+          backgroundColor: getBackgroundColor(i),
+          borderColor: getBorderColor(i)
         }
       } 
       ) : []

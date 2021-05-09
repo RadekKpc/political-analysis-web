@@ -41,12 +41,11 @@
   ];
 
 
-const getBorderColor = () => {
-    return borderColor[Math.floor((Math.random() * backgroundColor.length))];
+const getBorderColor = (i) => {
+  return borderColor[i];
 }
 
-const getBackgroundColor = () => {
-    console.log(Math.random % backgroundColor.length);
-    return backgroundColor[Math.floor((Math.random() * backgroundColor.length))];
+const getBackgroundColor = (i) => {
+    return backgroundColor[i];
 }
 export { getBorderColor, getBackgroundColor };
