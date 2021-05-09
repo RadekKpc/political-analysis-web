@@ -46,7 +46,7 @@ function PlotArea(props) {
     let start = props.dateRange[0] ? new Date(props.dateRange[0].getTime()) : new Date();
     let end = props.dateRange[1] ? new Date(props.dateRange[1].getTime()) : new Date();
     while(end.getDate() !== start.getDate() || end.getMonth() !== start.getMonth() || end.getFullYear() !== start.getFullYear() ){
-      days.push(end.getFullYear() + '-' + ('0' + (start.getMonth() + 1)).slice(-2) + "-" + ( "0" + start.getUTCDate()).slice(-2));
+      days.push(start.getFullYear() + '-' + ('0' + (start.getMonth() + 1)).slice(-2) + "-" + ( "0" + start.getUTCDate()).slice(-2));
       start.setDate(start.getDate() + 1);
     }
     console.log(days);
