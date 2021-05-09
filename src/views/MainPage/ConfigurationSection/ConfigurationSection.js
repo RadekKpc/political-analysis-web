@@ -14,15 +14,19 @@ function ConfigurationSection({onTagsChange}) {
     const items = [
         {
             id: 'TotalTweetsCount',
-            text: 'Total count of tweets for specific categories',
+            text: 'Total count of tweets',
         },
         {
             id: 'TotalLikesCount',
-            text: 'Total count of tweets\' likes for specific categories'
+            text: 'Total count of tweets\' likes'
         },
         {
             id: 'TotalRetweetsCount',
-            text: 'Total count of retweets for specific categories'
+            text: 'Total count of retweets'
+        },
+        {
+            id: 'TimeTweetsCount',
+            text: 'Count of tweets per day'
         }
       ];
 

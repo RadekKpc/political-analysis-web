@@ -1,9 +1,7 @@
-import styles from './MainPage.module.scss';
-import { Button, Column, Row, DatePickerInput,DatePicker } from "carbon-components-react"
+import { Column, Row, DatePickerInput,DatePicker } from "carbon-components-react"
 import ConfigurationSection from "./ConfigurationSection/ConfigurationSection";
 import PlotArea from './PlotArea/PlotArea';
-import {useState, useEffect} from 'react';
-import { stringify } from 'query-string';
+import {useState} from 'react';
 
 const MainPage = () => {
 
