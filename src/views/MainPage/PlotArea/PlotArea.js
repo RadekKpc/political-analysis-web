@@ -56,7 +56,7 @@ function PlotArea(props) {
       datasets: data ? data.map((set) => {
         return {
           label: set[0] ? set[0].category : '',
-          data: set.map((e) => e.result),
+          data: set[0] ? set.map((e) => e.result) : [],
           fill: false,
           backgroundColor: getBackgroundColor(),
           borderColor: getBorderColor()
