@@ -27,6 +27,14 @@ function ConfigurationSection({onTagsChange}) {
         {
             id: 'TimeTweetsCount',
             text: 'Count of tweets per day'
+        },
+        {
+            id: 'TimeLikesCount',
+            text: 'Count of likes per day'
+        },
+        {
+            id: 'TimeRetweetsCount',
+            text: 'Count of retweets per day'
         }
       ];
 

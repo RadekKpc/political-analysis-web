@@ -24,6 +24,12 @@ function PlotArea(props) {
       case "TimeTweetsCount":
           getTweetsForDay(props.labels, props.dateRange, setData, "TotalTweetsCount");
         break;
+      case "TimeLikesCount":
+        getTweetsForDay(props.labels, props.dateRange, setData, "TotalLikesCount");
+      break;
+      case "TimeRetweetsCount":
+        getTweetsForDay(props.labels, props.dateRange, setData, "TotalRetweetsCount");
+      break;
       default: 
         setData([]);
     }
@@ -140,6 +146,8 @@ function PlotArea(props) {
       case "TotalLikesCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalRetweetsCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TimeTweetsCount": return <Line data={setTimeData()} />
+      case "TimeLikesCount": return <Line data={setTimeData()} />
+      case "TimeRetweetsCount": return <Line data={setTimeData()} />
       default: return <Bar data={setDt()} options={opt} />
     }
   }
