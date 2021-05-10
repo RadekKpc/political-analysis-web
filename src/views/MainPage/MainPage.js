@@ -10,12 +10,14 @@ const MainPage = () => {
     const [supportingStrikeOptions, setSupportingStrikeOptions] = useState([]);
     const [chartType, setChartType] = useState(null);
     const [dateRange, setDataRange] = useState([]);
+    const [importantEvents, setImportantEvents] = useState(false);
 
-    const onTagsChange = (categories, parties, supportingStrike, type) => {
+    const onTagsChange = (categories, parties, supportingStrike, type, importantEv) => {
         setCategories(categories);
         setPoliticalParties(parties);
         setSupportingStrikeOptions(supportingStrike);
         setChartType(type);
+        setImportantEvents(importantEv);
     }
 
     return(  
@@ -24,7 +26,7 @@ const MainPage = () => {
                 <ConfigurationSection onTagsChange={onTagsChange}/>
             </Column>
             <Column>
-                <PlotArea labels={[...categories, ...politicalParties, ...supportingStrikeOptions]} dateRange={dateRange} chartType={chartType}/>
+                <PlotArea labels={[...categories, ...politicalParties, ...supportingStrikeOptions]} dateRange={dateRange} chartType={chartType} showImportantEvents={importantEvents}/>
                 <div style={{margin: 20}}>
                     <DatePicker datePickerType="range" onChange = {setDataRange} >
                         <DatePickerInput
