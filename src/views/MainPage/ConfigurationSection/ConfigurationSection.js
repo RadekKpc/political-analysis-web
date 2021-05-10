@@ -10,6 +10,7 @@ function ConfigurationSection({onTagsChange}) {
     const [chartType, setChartType] = useState('TotalTweetsCount');
     const [za, setZa] = useState(false);
     const [przeciw, setPrzeciw] = useState(false);
+    const [importantEvents, setImportantEvents] = useState(false);
     
     const items = [
         {
@@ -63,8 +64,8 @@ function ConfigurationSection({onTagsChange}) {
         let supportingStrike = [];
         if(za)supportingStrike.push('za');
         if(przeciw)supportingStrike.push('przeciw');
-        onTagsChange(categories.filter(cat => checkBoxesState[cat] && cat != null), politicalParties.filter(part => checkBoxesState[part] && part != null), supportingStrike, chartType);
-    },[checkBoxesState, za, przeciw, chartType])
+        onTagsChange(categories.filter(cat => checkBoxesState[cat] && cat != null), politicalParties.filter(part => checkBoxesState[part] && part != null), supportingStrike, chartType, importantEvents);
+    },[checkBoxesState, za, przeciw, chartType, importantEvents])
 
     useEffect(() => {
         fetch("/categories")
@@ -105,6 +106,9 @@ function ConfigurationSection({onTagsChange}) {
         <Column>
         <Checkbox key="za" id="za" labelText="za" checked={ za } onChange={setZa} />
         <Checkbox key="przeciw" id="przeciw" labelText="przeciw" checked={ przeciw } onChange={setPrzeciw} /> 
+        </Column>
+        <Column>
+        <Checkbox key="importantEvents" id="importantEvents" labelText="Show important events" disabled={chartType.includes("Time") ? false : true} checked={ importantEvents } onChange={setImportantEvents} />
         </Column>
         </Row>
         <Row>

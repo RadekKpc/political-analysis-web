@@ -1,18 +1,34 @@
-import { HorizontalBar, Bar, Line } from 'react-chartjs-2';
+import { Chart , HorizontalBar, Bar, Line } from 'react-chartjs-2';
 import { useEffect, useState } from 'react';
+import * as chartjs from 'chart.js'
+import 'chartjs-plugin-annotation';
 import { Button } from 'carbon-components-react';
 import { getTotalCountForSpecificCategories, getTweetsForDay } from '../../../services/StaticStatisticsService';
 import { getBackgroundColor, getBorderColor } from './ColorGenerator';
+import { importantEvents } from '../../../services/Events'
+import { matcher } from 'd3-selection';
+import { map } from 'd3-array';
 
 function PlotArea(props) {
 
   const [display, setDisplay] = useState(false);
   const [data, setData] = useState(false);
+  const [impEvents, setImportantEvents] = useState(props.showImportantEvents);
+
+  let days = []
+  let start = props.dateRange[0] ? new Date(props.dateRange[0].getTime()) : new Date();
+  let end = props.dateRange[1] ? new Date(props.dateRange[1].getTime()) : new Date();
+  for (let d = start; d <= end; d.setDate(start.getDate() + 1)) {
+    days.push(new Date(d).toISOString().slice(0, 10));
+
+  }
+  let filteredImportantEvents = importantEvents.filter(event => days.find(ev => ev == event));
+  let mappedImportantEvents = filteredImportantEvents.map(e => [e, days.findIndex(ev => ev == e)])
 
   const drawPlot = () => {
     setDisplay(true);
-    switch(props.chartType) {
-      case "TotalTweetsCount": 
+    switch (props.chartType) {
+      case "TotalTweetsCount":
         getTotalCountForSpecificCategories(props.labels, props.dateRange, setData, "TotalTweetsCount");
         break;
       case "TotalLikesCount":
@@ -22,43 +38,36 @@ function PlotArea(props) {
         getTotalCountForSpecificCategories(props.labels, props.dateRange, setData, "TotalRetweetsCount");
         break;
       case "TimeTweetsCount":
-          getTweetsForDay(props.labels, props.dateRange, setData, "TotalTweetsCount");
+        getTweetsForDay(props.labels, props.dateRange, setData, "TotalTweetsCount");
         break;
       case "TimeLikesCount":
         getTweetsForDay(props.labels, props.dateRange, setData, "TotalLikesCount");
-      break;
+        break;
       case "TimeRetweetsCount":
         getTweetsForDay(props.labels, props.dateRange, setData, "TotalRetweetsCount");
-      break;
-      default: 
+        break;
+      default:
         setData([]);
     }
   }
 
   useEffect(() => {
     console.log("setData", data);
-  }, [data]);
+    setImportantEvents(impEvents)
+  }, [data, impEvents]);
 
-  const setTimeData = () => 
-  {
-    let days = []
-    let start = props.dateRange[0] ? new Date(props.dateRange[0].getTime()) : new Date();
-    let end = props.dateRange[1] ? new Date(props.dateRange[1].getTime()) : new Date();
-    for (let d = start; d <= end; d.setDate(start.getDate() + 1)) {
-      days.push(new Date(d).toISOString().slice(0,10));
-
-    }
-    return  {
+  const setTimeData = () => {
+    return {
       labels: [...days],
       datasets: data ? data.map((set, i) => {
         return {
           label: set[0] ? set[0].category : '',
-          data: set[0] ? set.map((e) => { return {x: e.date, y: e.result}}) : [],
+          data: set[0] ? set.map((e) => { return { x: e.date, y: e.result } }) : [],
           fill: false,
           backgroundColor: getBackgroundColor(i),
-          borderColor: getBorderColor(i)
+          borderColor: getBorderColor(i),
         }
-      } 
+      },
       ) : []
     };
   };
@@ -109,7 +118,7 @@ function PlotArea(props) {
             'rgba(75, 192, 192, 1)',
             'rgba(153, 102, 255, 1)',
             'rgba(255, 159, 64, 1)',
-            
+
           ],
           borderWidth: 1,
         },
@@ -136,24 +145,61 @@ function PlotArea(props) {
     },
   };
 
+
+  const importantEventOptions = {
+    responsive: true,
+    annotation: {
+      drawTime: "afterDraw",
+      events: ['click', 'mouseenter', 'mouseleave'],
+      annotations:
+        mappedImportantEvents ? mappedImportantEvents.map((e) => {
+          return {
+            type: 'line',
+            mode: 'vertical',
+            scaleID: 'x-axis-0',
+            value: e[0],
+            borderColor: "red",
+            borderWidth: 2,
+            hidden: true,
+            label: {
+              backgroundColor: "black",
+              content: e[0],
+              enabled: true,
+              position: e[1]
+            },
+            // onMouseenter: function (e) {
+            //   this.options.label.enabled = true;
+            // },
+            // onMouseleave: function (e) {
+            //  this.options.label.enabled = false;
+            // }
+
+          };
+        }) : []
+    },
+  }
+
+
   const renderBar = () => {
-    if(!display) return <div></div>;
-    switch(props.chartType) {
+    let lineOptions = props.showImportantEvents ? importantEventOptions: {};
+    const key = JSON.stringify(lineOptions);
+    if (!display) return <div></div>;
+    switch (props.chartType) {
       case "TotalTweetsCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalLikesCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalRetweetsCount": return <HorizontalBar data={setDt()} options={opt} />
-      case "TimeTweetsCount": return <Line data={setTimeData()} />
-      case "TimeLikesCount": return <Line data={setTimeData()} />
-      case "TimeRetweetsCount": return <Line data={setTimeData()} />
+      case "TimeTweetsCount": return <Line key={key} data={setTimeData()} options={lineOptions}/>
+      case "TimeLikesCount": return <Line id="time-chart" key={key} data={setTimeData()} options={lineOptions} />
+      case "TimeRetweetsCount": return <Line key={key} data={setTimeData()} options={lineOptions}/>
       default: return <Bar data={setDt()} options={opt} />
     }
   }
 
   return (
-      <div>
-        {renderBar()}
-        <Button onClick={drawPlot}>Draw Chart </Button>
-      </div>
+    <div>
+      {renderBar()}
+      <Button onClick={drawPlot}>Draw Chart </Button>
+    </div>
 
   );
 }
