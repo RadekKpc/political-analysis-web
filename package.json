@@ -17,7 +17,9 @@
     "react-chartjs-2": "^2.11.1",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "zingchart": "^2.9.3",
+    "zingchart-react": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
