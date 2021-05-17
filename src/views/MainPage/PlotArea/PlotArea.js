@@ -3,17 +3,22 @@ import { useEffect, useState } from 'react';
 import * as chartjs from 'chart.js'
 import 'chartjs-plugin-annotation';
 import { Button } from 'carbon-components-react';
-import { getTotalCountForSpecificCategories, getTweetsForDay } from '../../../services/StaticStatisticsService';
+import { getTotalCountForSpecificCategories, getTweetsForDay , getWordCloud} from '../../../services/StaticStatisticsService';
 import { getBackgroundColor, getBorderColor } from './ColorGenerator';
 import { importantEvents } from '../../../services/Events'
 import { matcher } from 'd3-selection';
 import { map } from 'd3-array';
+import 'zingchart/es6';
+import ZingChart from 'zingchart-react';
+import "zingchart/modules-es6/zingchart-wordcloud.min.js";
+
 
 function PlotArea(props) {
 
   const [display, setDisplay] = useState(false);
   const [data, setData] = useState(false);
   const [impEvents, setImportantEvents] = useState(props.showImportantEvents);
+  const [tweetText, setTweetText] = useState(null)
 
   let days = []
   let start = props.dateRange[0] ? new Date(props.dateRange[0].getTime()) : new Date();
@@ -45,6 +50,9 @@ function PlotArea(props) {
         break;
       case "TimeRetweetsCount":
         getTweetsForDay(props.labels, props.dateRange, setData, "TotalRetweetsCount");
+        break;
+      case "WordCloud":
+        getWordCloud(props.labels, props.dateRange, setTweetText, "WordCloud");
         break;
       default:
         setData([]);
@@ -179,7 +187,6 @@ function PlotArea(props) {
     },
   }
 
-
   const renderBar = () => {
     let lineOptions = props.showImportantEvents ? importantEventOptions: {};
     const key = JSON.stringify(lineOptions);
@@ -191,6 +198,7 @@ function PlotArea(props) {
       case "TimeTweetsCount": return <Line key={key} data={setTimeData()} options={lineOptions}/>
       case "TimeLikesCount": return <Line id="time-chart" key={key} data={setTimeData()} options={lineOptions} />
       case "TimeRetweetsCount": return <Line key={key} data={setTimeData()} options={lineOptions}/>
+      case "WordCloud": return <ZingChart data={{type: 'wordcloud', options: {text: tweetText, minLength: 4}}} />
       default: return <Bar data={setDt()} options={opt} />
     }
   }

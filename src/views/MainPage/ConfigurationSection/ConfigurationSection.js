@@ -36,6 +36,10 @@ function ConfigurationSection({onTagsChange}) {
         {
             id: 'TimeRetweetsCount',
             text: 'Count of retweets per day'
+        },
+        {
+            id: 'WordCloud',
+            text: 'Word cloud for category'
         }
       ];
 

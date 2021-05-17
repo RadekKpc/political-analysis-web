@@ -69,4 +69,22 @@ const getTweetsForDay = (categories, dateRange, setData, type) => {
         .then(response => response.json())
         .then(data => setData(data));
 }
-export { getTotalCountForSpecificCategories, getTweetsForDay };
+
+const getWordCloud = (categories, dateRange, setTweetText, type) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            categories: categories,
+            dateRange: dateRange,
+        })
+    };
+
+    fetch('/wordcloud', requestOptions)
+        .then(response => response.json())
+        .then(data => setTweetText(data.join(" ")));
+    
+}
+export { getTotalCountForSpecificCategories, getTweetsForDay , getWordCloud};
