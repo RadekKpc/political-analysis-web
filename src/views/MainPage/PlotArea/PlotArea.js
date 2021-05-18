@@ -201,7 +201,7 @@ function PlotArea(props) {
   }
 
   return (
-    <div>
+    <div style={{marginLeft: 30}}>
       {renderBar()}
       <Button onClick={drawPlot}>Draw Chart </Button>
     </div>

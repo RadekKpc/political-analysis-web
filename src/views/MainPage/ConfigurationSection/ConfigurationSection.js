@@ -113,7 +113,7 @@ function ConfigurationSection({onTagsChange}) {
 
     return <div style={{ padding: 20 }}>
         <Row>
-        <Column>
+        <Column >
         <Checkbox key={"all_parties"} id={"all_parties"} labelText={"Parties"} checked={allCheckedParties} onChange={setAllPartes} />
         <br />
         {politicalParties.map(function(party){
@@ -124,7 +124,7 @@ function ConfigurationSection({onTagsChange}) {
         })}
         <br />
         </Column>
-        <Column>
+        <Column >
         <Checkbox key={"all_categories"} id={"all_categories"} labelText={"Categories"} checked={allCheckedCategories } onChange={setAllCategories} />
         <br />
         {categories.map(function(category){
@@ -139,7 +139,13 @@ function ConfigurationSection({onTagsChange}) {
         <Checkbox key="przeciw" id="przeciw" labelText="przeciw" checked={ przeciw } onChange={setPrzeciw} /> 
         </Column>
         <Column>
-        {importantEventsWithLabel.map(e => {
+        {importantEventsWithLabel.filter((e,i) => i<10).map(e => {
+            return <Checkbox key={e.id} id={e.id.toString()} labelText={e.name} disabled={chartType.includes("Time") ? false : true}  checked={ importantEvents[e.id.toString()] } onChange={(event) => addImportantEvent(e.id,event)} />
+        })
+        }
+        </Column>
+        <Column>
+        {importantEventsWithLabel.filter((e,i) => i>=10).map(e => {
             return <Checkbox key={e.id} id={e.id.toString()} labelText={e.name} disabled={chartType.includes("Time") ? false : true}  checked={ importantEvents[e.id.toString()] } onChange={(event) => addImportantEvent(e.id,event)} />
         })
         }

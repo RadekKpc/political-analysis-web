@@ -20,29 +20,35 @@ const MainPage = () => {
         setImportantEvents(importantEv);
     }
 
-    return(  
-        <Row>
-            <Column>
-                <ConfigurationSection onTagsChange={onTagsChange}/>
-            </Column>
-            <Column>
-                <PlotArea labels={[...categories, ...politicalParties, ...supportingStrikeOptions]} dateRange={dateRange} chartType={chartType} showImportantEvents={importantEvents}/>
-                <div style={{margin: 20}}>
-                    <DatePicker datePickerType="range" onChange = {setDataRange} >
-                        <DatePickerInput
-                            id="date-picker-input-id-start"
-                            placeholder="mm/dd/yyyy"
-                            labelText="Start date"
-                        />
-                        <DatePickerInput
-                            id="date-picker-input-id-finish"
-                            placeholder="mm/dd/yyyy"
-                            labelText="End date"
-                        />
-                    </DatePicker>
-                </div>
-            </Column>
-        </Row>
+    return(  <>
+            <Row>
+                <Column>
+                    <div style={{margin: 20}}>
+                        <ConfigurationSection onTagsChange={onTagsChange}/>
+                    </div>
+                </Column>
+            </Row>
+            <Row>
+                <Column spab={12}>
+                    <PlotArea labels={[...categories, ...politicalParties, ...supportingStrikeOptions]} dateRange={dateRange} chartType={chartType} showImportantEvents={importantEvents}/>
+                </Column>
+            </Row>
+            <Row>
+            <div style={{margin: 50}}>
+                            <DatePicker datePickerType="range" onChange = {setDataRange} >
+                                <DatePickerInput
+                                    id="date-picker-input-id-start"
+                                    placeholder="mm/dd/yyyy"
+                                    labelText="Start date"
+                                />
+                                <DatePickerInput
+                                    id="date-picker-input-id-finish"
+                                    placeholder="mm/dd/yyyy"
+                                    labelText="End date"
+                                />
+                            </DatePicker>
+                        </div>
+            </Row> </>
     );
 
 }
