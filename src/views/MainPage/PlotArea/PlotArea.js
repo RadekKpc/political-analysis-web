@@ -1,13 +1,10 @@
-import { Chart , HorizontalBar, Bar, Line } from 'react-chartjs-2';
+import { HorizontalBar, Bar, Line } from 'react-chartjs-2';
 import { useEffect, useState } from 'react';
-import * as chartjs from 'chart.js'
 import 'chartjs-plugin-annotation';
 import { Button } from 'carbon-components-react';
 import { getTotalCountForSpecificCategories, getTweetsForDay , getWordCloud} from '../../../services/StaticStatisticsService';
 import { getBackgroundColor, getBorderColor } from './ColorGenerator';
 import { importantEvents } from '../../../services/Events'
-import { matcher } from 'd3-selection';
-import { map } from 'd3-array';
 import 'zingchart/es6';
 import ZingChart from 'zingchart-react';
 import "zingchart/modules-es6/zingchart-wordcloud.min.js";
@@ -27,8 +24,9 @@ function PlotArea(props) {
     days.push(new Date(d).toISOString().slice(0, 10));
 
   }
-  let filteredImportantEvents = importantEvents.filter(event => days.find(ev => ev == event));
-  let mappedImportantEvents = filteredImportantEvents.map(e => [e, days.findIndex(ev => ev == e)])
+  let filteredImportantEvents = importantEvents.filter((event,index) => days.find(ev => ev === event) && impEvents[index]);
+  // console.log(filteredImportantEvents.filter((e,i) => {console.log(i, props.showImportantEvents, ); return }));
+  let mappedImportantEvents = filteredImportantEvents.map(e => [e, days.findIndex(ev => ev === e)])
 
   const drawPlot = () => {
     setDisplay(true);
@@ -60,9 +58,8 @@ function PlotArea(props) {
   }
 
   useEffect(() => {
-    console.log("setData", data);
-    setImportantEvents(impEvents)
-  }, [data, impEvents]);
+    setImportantEvents(props.showImportantEvents)
+  }, [data, props.showImportantEvents]);
 
   const setTimeData = () => {
     return {
@@ -188,7 +185,7 @@ function PlotArea(props) {
   }
 
   const renderBar = () => {
-    let lineOptions = props.showImportantEvents ? importantEventOptions: {};
+    let lineOptions = importantEventOptions;
     const key = JSON.stringify(lineOptions);
     if (!display) return <div></div>;
     switch (props.chartType) {

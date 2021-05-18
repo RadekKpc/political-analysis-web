@@ -10,7 +10,7 @@ const MainPage = () => {
     const [supportingStrikeOptions, setSupportingStrikeOptions] = useState([]);
     const [chartType, setChartType] = useState(null);
     const [dateRange, setDataRange] = useState([]);
-    const [importantEvents, setImportantEvents] = useState(false);
+    const [importantEvents, setImportantEvents] = useState({});
 
     const onTagsChange = (categories, parties, supportingStrike, type, importantEv) => {
         setCategories(categories);
