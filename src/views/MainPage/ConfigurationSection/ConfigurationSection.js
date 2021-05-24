@@ -96,6 +96,7 @@ function ConfigurationSection({onTagsChange}) {
         if(za)supportingStrike.push('za');
         if(przeciw)supportingStrike.push('przeciw');
         onTagsChange(categories.filter(cat => checkBoxesState[cat] && cat != null), politicalParties.filter(part => checkBoxesState[part] && part != null), supportingStrike, chartType, importantEvents);
+     // eslint-disable-next-line
     },[checkBoxesState, za, przeciw, chartType, importantEvents])
 
     useEffect(() => {
