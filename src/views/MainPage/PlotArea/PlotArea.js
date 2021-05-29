@@ -2,7 +2,7 @@ import { HorizontalBar, Bar, Line } from 'react-chartjs-2';
 import { useEffect, useState } from 'react';
 import 'chartjs-plugin-annotation';
 import { Button } from 'carbon-components-react';
-import { getTotalCountForSpecificCategories, getTweetsForDay , getWordCloud} from '../../../services/StaticStatisticsService';
+import { getTotalCountForSpecificCategories, getTweetsForDay , getWordCloud, getWordCloudHashtags} from '../../../services/StaticStatisticsService';
 import { getBackgroundColor, getBorderColor } from './ColorGenerator';
 import { importantEvents } from '../../../services/Events'
 import 'zingchart/es6';
@@ -26,7 +26,6 @@ function PlotArea(props) {
 
   }
   let filteredImportantEvents = importantEvents.filter((event,index) => days.find(ev => ev === event) && impEvents[index]);
-  // console.log(filteredImportantEvents.filter((e,i) => {console.log(i, props.showImportantEvents, ); return }));
   let mappedImportantEvents = filteredImportantEvents.map(e => [e, days.findIndex(ev => ev === e)])
 
   const drawPlot = () => {
@@ -52,6 +51,9 @@ function PlotArea(props) {
         break;
       case "WordCloud":
         getWordCloud(props.labels, props.dateRange, setTweetText, "WordCloud");
+        break;
+      case "WordCloudHashtags":
+        getWordCloudHashtags(props.labels, props.dateRange, setTweetText, "WordCloudHashtags");
         break;
       default:
         setData([]);
@@ -173,13 +175,6 @@ function PlotArea(props) {
               enabled: true,
               position: e[1]
             },
-            // onMouseenter: function (e) {
-            //   this.options.label.enabled = true;
-            // },
-            // onMouseleave: function (e) {
-            //  this.options.label.enabled = false;
-            // }
-
           };
         }) : []
     },
@@ -196,7 +191,8 @@ function PlotArea(props) {
       case "TimeTweetsCount": return <div><Line key={key} data={setTimeData()} options={lineOptions}/><NumericalStatistics data={setTimeData()}/></div>
       case "TimeLikesCount": return <div><Line id="time-chart" key={key} data={setTimeData()} options={lineOptions} /><NumericalStatistics data={setTimeData()}/></div>
       case "TimeRetweetsCount": return <div><Line key={key} data={setTimeData()} options={lineOptions}/><NumericalStatistics data={setTimeData()}/></div>
-      case "WordCloud": return <ZingChart data={{type: 'wordcloud', options: {text: tweetText, minLength: 4}}} />
+      case "WordCloud": return <ZingChart data={{type: 'wordcloud', options: {text: tweetText, minLength: 4, ignore: ['https', 'była', 'było', 'będą', 'jeśli', 'tych', 'jako', 'więc', 'tego', 'która', 'który', 'które', 'czyli', 'albo', 'jest', 'żeby']}}} />
+      case "WordCloudHashtags": return <ZingChart data={{type: 'wordcloud', options: {text: tweetText, minLength: 4}}} />
       default: return <Bar data={setDt()} options={opt} />
     }
   }
