@@ -9,6 +9,7 @@ import 'zingchart/es6';
 import ZingChart from 'zingchart-react';
 import "zingchart/modules-es6/zingchart-wordcloud.min.js";
 import NumericalStatistics from '../../../components/NumericalStatistics/NumericalStatistics';
+import CorelationTable from '../../../components/CorelationTable/CorelationTable';
 
 
 function PlotArea(props) {
@@ -193,9 +194,9 @@ function PlotArea(props) {
       case "TotalTweetsCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalLikesCount": return <HorizontalBar data={setDt()} options={opt} />
       case "TotalRetweetsCount": return <HorizontalBar data={setDt()} options={opt} />
-      case "TimeTweetsCount": return <div><Line key={key} data={setTimeData()} options={lineOptions}/><NumericalStatistics data={setTimeData()}/></div>
-      case "TimeLikesCount": return <div><Line id="time-chart" key={key} data={setTimeData()} options={lineOptions} /><NumericalStatistics data={setTimeData()}/></div>
-      case "TimeRetweetsCount": return <div><Line key={key} data={setTimeData()} options={lineOptions}/><NumericalStatistics data={setTimeData()}/></div>
+      case "TimeTweetsCount": return <div><Line key={key} data={setTimeData()} options={lineOptions}/><NumericalStatistics data={setTimeData()}/><CorelationTable  data={setTimeData()}/></div>
+      case "TimeLikesCount": return <div><Line id="time-chart" key={key} data={setTimeData()} options={lineOptions} /><NumericalStatistics data={setTimeData()}/><CorelationTable data={setTimeData()}/></div>
+      case "TimeRetweetsCount": return <div><Line key={key} data={setTimeData()} options={lineOptions}/><NumericalStatistics data={setTimeData()}/><CorelationTable  data={setTimeData()}/></div>
       case "WordCloud": return <ZingChart data={{type: 'wordcloud', options: {text: tweetText, minLength: 4}}} />
       default: return <Bar data={setDt()} options={opt} />
     }

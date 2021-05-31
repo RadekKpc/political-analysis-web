@@ -1,12 +1,8 @@
 import { max } from "d3-array";
-import { useEffect } from "react";
 import { std, mode, variance, median, mean } from 'mathjs';
 import styles from './NumericalStatistics.module.scss';
-const NumericalStatistics = (props) => {
 
-    useEffect(() => {
-        console.log(props.data)
-    }, [props.data]);
+const NumericalStatistics = (props) => {
 
     const roundNumber = (numberString, how) => {
         return numberString.slice(0,numberString.indexOf(".") + 1 + how);
