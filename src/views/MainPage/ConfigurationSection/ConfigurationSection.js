@@ -67,6 +67,10 @@ function ConfigurationSection({onTagsChange}) {
         {
             id: 'WordCloud',
             text: 'Word cloud for category'
+        },
+        {
+            id: 'WordCloudHashtags',
+            text: 'Word cloud (hashtags) for category'
         }
       ];
 

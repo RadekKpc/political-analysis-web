@@ -84,7 +84,46 @@ const getWordCloud = (categories, dateRange, setTweetText, type) => {
 
     fetch('/wordcloud', requestOptions)
         .then(response => response.json())
-        .then(data => setTweetText(data.join(" ")));
-    
+        .then(data =>
+            setTweetText(
+                data
+                  .map((word) => word.split(" "))
+                  .flat(1)
+                  .filter(
+                    (word) =>
+                      !word.match(/#[0-9a-zżźćńółęąś_]+/gi) &&
+                      !word.match(/@[0-9a-zżźćńółęąś_]+/gi) &&
+                      !word.match(/https.+/gi)
+                  )
+                  .map((word) => word.replace(/"|\?|„/g, ""))
+                  .join(" ")
+              ));
+
 }
-export { getTotalCountForSpecificCategories, getTweetsForDay , getWordCloud};
+
+const getWordCloudHashtags = (categories, dateRange, setTweetText, type) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      categories: categories,
+      dateRange: dateRange,
+    }),
+  };
+
+  fetch("/wordcloud", requestOptions)
+    .then((response) => response.json())
+    .then((data) =>
+      setTweetText(
+        data
+          .map((word) => word.split(" "))
+          .flat(1)
+          .map((word) => word.match(/#[a-zżźćńółęąś]+/gi))
+          .join(" ")
+      )
+    );
+};
+
+export { getTotalCountForSpecificCategories, getTweetsForDay , getWordCloud, getWordCloudHashtags};
